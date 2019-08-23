@@ -71,3 +71,4 @@ buck-out/
 yarn.lock
 
 .watchman-cookie-*
+android/gradle.properties
