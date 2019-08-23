@@ -1,5 +1,14 @@
 import React from 'react';
-import {Animated, View, Text, TextInput, Picker, Keyboard} from 'react-native';
+import {
+  Animated,
+  View,
+  Text,
+  TextInput,
+  Picker,
+  Keyboard,
+  Dimensions,
+  UIManager,
+} from 'react-native';
 
 const {State: TextInputState} = TextInput;
 
@@ -118,7 +127,8 @@ export default class Convert extends React.Component {
       (originX, originY, width, height, pageX, pageY) => {
         const fieldHeight = height;
         const fieldTop = pageY;
-        const gap = windowHeight - keyboardHeight - (fieldTop + fieldHeight);
+        const header = 100;
+        const gap = windowHeight - keyboardHeight - (fieldTop + fieldHeight + header);
         if (gap >= 0) {
           return;
         }

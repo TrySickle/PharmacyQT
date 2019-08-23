@@ -122,8 +122,10 @@ export default class Days extends React.Component {
         return 'Inject';
       case 'Drops':
         return 'Instill';
+      case 'Gel_pump':
+        return 'Apply';
       default:
-        return type;
+        return 'Take';
     }
   }
 
