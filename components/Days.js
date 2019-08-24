@@ -6,9 +6,13 @@ import {
   RefreshControl,
   TextInput,
   Picker,
+  TouchableOpacity,
 } from 'react-native';
 
 import firebase from 'react-native-firebase';
+import ModalFilterPicker from './ModalFilterPicker';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faCaretDown} from '@fortawesome/free-solid-svg-icons';
 
 export default class Days extends React.Component {
   constructor(props) {
@@ -37,6 +41,7 @@ export default class Days extends React.Component {
       dose_unit: '',
       action: '',
       selectedIndex: 0,
+      visible: false,
     };
 
     this.update = this.update.bind(this);
@@ -238,6 +243,7 @@ export default class Days extends React.Component {
   render() {
     return (
       <ScrollView
+        keyboardShouldPersistTaps={'always'}
         refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
@@ -248,20 +254,32 @@ export default class Days extends React.Component {
           <Text style={this.props.styles.title}>Medication</Text>
         </View>
         <View style={this.props.styles.rowContainer}>
-          <Text style={this.props.styles.h1}>Name </Text>
-          <Picker
-            selectedValue={this.state.name}
-            style={{width: 200}}
-            onValueChange={(itemValue, itemIndex) =>
+          <Text style={this.props.styles.h1}>Name: </Text>
+          <TouchableOpacity
+            style={{height: 50, justifyContent: 'center'}}
+            onPress={() =>
+              this.setState(prevState => ({visible: !prevState.visible}))
+            }>
+            <Text style={this.props.styles.text}>
+              {this.state.name}
+              <FontAwesomeIcon icon={faCaretDown} />
+            </Text>
+          </TouchableOpacity>
+          <ModalFilterPicker
+            visible={this.state.visible}
+            onSelect={(itemValue, itemIndex) => {
               this.setState(
                 {selectedIndex: itemIndex, name: itemValue},
                 this.handleChange,
-              )
-            }>
-            {this.state.db_names.map((item, index) => {
-              return <Picker.Item label={item} value={item} key={index} />;
-            })}
-          </Picker>
+              );
+            }}
+            onCancel={() => this.setState({visible: false})}
+            items={this.state.db_names.map((name, index) => ({
+              key: name,
+              index: index,
+            }))}
+            styles={this.props.styles}
+          />
         </View>
         <View>
           <Text style={this.props.styles.text}>

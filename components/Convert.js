@@ -92,7 +92,7 @@ export default class Convert extends React.Component {
 
   render() {
     return (
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps={'always'}>
         <View>
           <Text style={this.props.styles.title}>Original Rx</Text>
         </View>
