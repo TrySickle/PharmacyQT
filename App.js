@@ -84,8 +84,7 @@ const styles = StyleSheet.create({
   dropdownItems: {
     color: 'black',
     fontSize: 20,
-    marginBottom: 10,
-    borderBottomWidth: 0.5,
+    marginBottom: 20,
   },
   margin: {
     marginTop: 20,

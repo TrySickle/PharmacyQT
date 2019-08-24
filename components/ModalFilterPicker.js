@@ -34,15 +34,24 @@ export default ({items, onSelect, onCancel, visible, styles}) => {
           marginLeft: width / 8,
           marginTop: height / 10,
           maxWidth: width * 0.75,
-          backgroundColor: '#E6E6E6',
+          backgroundColor: '#FDFDFD',
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 0,
+            height: 8,
+          },
+          shadowOpacity: 0.46,
+          shadowRadius: 11.14,
+
+          elevation: 17,
         }}>
         <TextInput
           value={filter}
           onChangeText={text => setFilter(text)}
           placeholder={'Search'}
-          style={{borderBottomWidth: 0.5}}
+          style={{borderBottomWidth: 0.5, padding: 10}}
         />
-        <ScrollView keyboardShouldPersistTaps={'handled'}>
+        <ScrollView keyboardShouldPersistTaps={'handled'} style={{padding: 10}}>
           {filteredItems.map(item => (
             <TouchableOpacity
               key={item.index}
