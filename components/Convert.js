@@ -16,7 +16,7 @@ export default class Convert extends React.Component {
       for_type: 'days',
       total_ml: '',
       new_amount: '',
-      new_volume: '',
+      new_volume: '5',
       new_rx: '',
     };
 
