@@ -174,7 +174,6 @@ export default class Days extends React.Component {
   }
 
   handleChange() {
-    console.log(this.state.quantity, this.state.box_unit, this.state.box_qty);
     let quantity = parseInt(this.state.quantity);
     let amount = parseInt(this.state.amount);
     let take_times = parseInt(this.state.take_times);
@@ -280,11 +279,14 @@ export default class Days extends React.Component {
           <Text style={this.props.styles.h1}>Quantity: </Text>
           <TextInput
             keyboardType={'numeric'}
+            returnKeyType={'next'}
             value={this.state.quantity}
             style={this.props.styles.tInput}
             onChangeText={text =>
               this.setState({quantity: text}, this.handleChange)
             }
+            onSubmitEditing={() => this.input2.focus()}
+            blurOnSubmit={false}
           />
           <Text style={this.props.styles.text}>{this.state.qty_unit}</Text>
           {!!this.state.quantity && (
@@ -299,11 +301,17 @@ export default class Days extends React.Component {
           <Text style={this.props.styles.h1}>{this.state.action} </Text>
           <TextInput
             keyboardType={'numeric'}
+            returnKeyType={'next'}
             value={this.state.amount}
             style={this.props.styles.tInput}
             onChangeText={text =>
               this.setState({amount: text}, this.handleChange)
             }
+            ref={ref => {
+              this.input2 = ref;
+            }}
+            onSubmitEditing={() => this.input3.focus()}
+            blurOnSubmit={false}
           />
           <Text style={this.props.styles.text}>{this.state.dose_unit}</Text>
         </View>
@@ -319,6 +327,9 @@ export default class Days extends React.Component {
               onChangeText={text =>
                 this.setState({take_times: text}, this.handleChange)
               }
+              ref={ref => {
+                this.input3 = ref;
+              }}
             />
             <Picker
               selectedValue={this.state.take_times_type}

@@ -100,20 +100,29 @@ export default class Convert extends React.Component {
           <Text style={this.props.styles.h1}>Strength: </Text>
           <TextInput
             keyboardType={'numeric'}
+            returnKeyType={'next'}
             value={this.state.og_amount}
             style={this.props.styles.tInput}
             onChangeText={text =>
               this.setState({og_amount: text}, this.handleChange)
             }
+            onSubmitEditing={() => this.input2.focus()}
+            blurOnSubmit={false}
           />
           <Text style={this.props.styles.text}>mg /</Text>
           <TextInput
             keyboardType={'numeric'}
+            returnKeyType={'next'}
             value={this.state.og_volume}
             style={this.props.styles.tInput}
             onChangeText={text =>
               this.setState({og_volume: text}, this.handleChange)
             }
+            ref={ref => {
+              this.input2 = ref;
+            }}
+            onSubmitEditing={() => this.input3.focus()}
+            blurOnSubmit={false}
           />
           <Text style={this.props.styles.text}>ml</Text>
         </View>
@@ -121,11 +130,17 @@ export default class Convert extends React.Component {
           <Text style={this.props.styles.h1}>Take </Text>
           <TextInput
             keyboardType={'numeric'}
+            returnKeyType={'next'}
             value={this.state.take_amount}
             style={this.props.styles.tInput}
             onChangeText={text =>
               this.setState({take_amount: text}, this.handleChange)
             }
+            ref={ref => {
+              this.input3 = ref;
+            }}
+            onSubmitEditing={() => this.input4.focus()}
+            blurOnSubmit={false}
           />
           <Picker
             selectedValue={this.state.take_amount_type}
@@ -144,11 +159,17 @@ export default class Convert extends React.Component {
           <View style={this.props.styles.absoluteRowContainer}>
             <TextInput
               keyboardType={'numeric'}
+              returnKeyType={'next'}
               value={this.state.take_times}
               style={this.props.styles.tInput}
               onChangeText={text =>
                 this.setState({take_times: text}, this.handleChange)
               }
+              ref={ref => {
+                this.input4 = ref;
+              }}
+              onSubmitEditing={() => this.input5.focus()}
+              blurOnSubmit={false}
             />
             <Picker
               selectedValue={this.state.take_times_type}
@@ -171,11 +192,17 @@ export default class Convert extends React.Component {
           <Text style={this.props.styles.h1}>For </Text>
           <TextInput
             keyboardType={'numeric'}
+            returnKeyType={'next'}
             value={this.state.for_x}
             style={this.props.styles.tInput}
             onChangeText={text =>
               this.setState({for_x: text}, this.handleChange)
             }
+            ref={ref => {
+              this.input5 = ref;
+            }}
+            onSubmitEditing={() => this.input6.focus()}
+            blurOnSubmit={false}
           />
           <Picker
             selectedValue={this.state.for_type}
@@ -199,11 +226,17 @@ export default class Convert extends React.Component {
           <Text style={this.props.styles.h1}>Strength: </Text>
           <TextInput
             keyboardType={'numeric'}
+            returnKeyType={'next'}
             value={this.state.new_amount}
             style={this.props.styles.tInput}
             onChangeText={text =>
               this.setState({new_amount: text}, this.handleChange)
             }
+            ref={ref => {
+              this.input6 = ref;
+            }}
+            onSubmitEditing={() => this.input7.focus()}
+            blurOnSubmit={false}
           />
           <Text style={this.props.styles.text}>mg /</Text>
           <TextInput
@@ -213,6 +246,9 @@ export default class Convert extends React.Component {
             onChangeText={text =>
               this.setState({new_volume: text}, this.handleChange)
             }
+            ref={ref => {
+              this.input7 = ref;
+            }}
           />
           <Text style={this.props.styles.text}>ml</Text>
         </View>
