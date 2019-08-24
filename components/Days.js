@@ -253,7 +253,10 @@ export default class Days extends React.Component {
             selectedValue={this.state.name}
             style={{width: 200}}
             onValueChange={(itemValue, itemIndex) =>
-              this.setState({selectedIndex: itemIndex}, this.handleChange)
+              this.setState(
+                {selectedIndex: itemIndex, name: itemValue},
+                this.handleChange,
+              )
             }>
             {this.state.db_names.map((item, index) => {
               return <Picker.Item label={item} value={item} key={index} />;
