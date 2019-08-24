@@ -252,6 +252,7 @@ export default class Convert extends React.Component {
           />
           <Text style={this.props.styles.text}>ml</Text>
         </View>
+        <View style={this.props.styles.margin} />
         <View>
           <Text style={this.props.styles.h1}>{this.state.new_rx}</Text>
         </View>
