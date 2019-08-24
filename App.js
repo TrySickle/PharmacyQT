@@ -12,7 +12,7 @@ export default class App extends React.Component {
       index: 0,
       routes: [
         {key: 'first', title: 'Convert'},
-        {key: 'second', title: "Days' Supply"},
+        {key: 'second', title: 'Days of Supply'},
       ],
     };
   }
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 15,
   },
   tInput: {
     width: 40,
@@ -80,5 +80,8 @@ const styles = StyleSheet.create({
   text: {
     color: 'black',
     fontSize: 20,
+  },
+  margin: {
+    marginTop: 20,
   },
 });

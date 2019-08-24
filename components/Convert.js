@@ -1,16 +1,5 @@
 import React from 'react';
-import {
-  Animated,
-  View,
-  Text,
-  TextInput,
-  Picker,
-  Keyboard,
-  Dimensions,
-  UIManager,
-} from 'react-native';
-
-const {State: TextInputState} = TextInput;
+import {View, Text, TextInput, Picker, ScrollView} from 'react-native';
 
 export default class Convert extends React.Component {
   constructor(props) {
@@ -29,26 +18,9 @@ export default class Convert extends React.Component {
       new_amount: '',
       new_volume: '',
       new_rx: '',
-      shift: new Animated.Value(0),
     };
 
     this.handleChange = this.handleChange.bind(this);
-  }
-
-  componentDidMount() {
-    this.keyboardDidShowSub = Keyboard.addListener(
-      'keyboardDidShow',
-      this.handleKeyboardDidShow,
-    );
-    this.keyboardDidHideSub = Keyboard.addListener(
-      'keyboardDidHide',
-      this.handleKeyboardDidHide,
-    );
-  }
-
-  componentWillUnmount() {
-    this.keyboardDidShowSub.remove();
-    this.keyboardDidHideSub.remove();
   }
 
   handleChange() {
@@ -118,41 +90,9 @@ export default class Convert extends React.Component {
       : this.state.take_times;
   }
 
-  handleKeyboardDidShow = event => {
-    const {height: windowHeight} = Dimensions.get('window');
-    const keyboardHeight = event.endCoordinates.height;
-    const currentlyFocusedField = TextInputState.currentlyFocusedField();
-    UIManager.measure(
-      currentlyFocusedField,
-      (originX, originY, width, height, pageX, pageY) => {
-        const fieldHeight = height;
-        const fieldTop = pageY;
-        const header = 100;
-        const gap = windowHeight - keyboardHeight - (fieldTop + fieldHeight + header);
-        if (gap >= 0) {
-          return;
-        }
-        Animated.timing(this.state.shift, {
-          toValue: gap,
-          duration: 1000,
-          useNativeDriver: true,
-        }).start();
-      },
-    );
-  };
-
-  handleKeyboardDidHide = () => {
-    Animated.timing(this.state.shift, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-  };
-
   render() {
-    const {shift} = this.state;
     return (
-      <Animated.View style={[{transform: [{translateY: shift}]}]}>
+      <ScrollView>
         <View>
           <Text style={this.props.styles.title}>Original Rx</Text>
         </View>
@@ -251,7 +191,7 @@ export default class Convert extends React.Component {
           <Text style={this.props.styles.h1}>Total ml: </Text>
           <Text style={this.props.styles.h1}>{this.state.total_ml}</Text>
         </View>
-
+        <View style={this.props.styles.margin} />
         <View>
           <Text style={this.props.styles.title}>New Rx</Text>
         </View>
@@ -279,7 +219,7 @@ export default class Convert extends React.Component {
         <View>
           <Text style={this.props.styles.h1}>{this.state.new_rx}</Text>
         </View>
-      </Animated.View>
+      </ScrollView>
     );
   }
 }
