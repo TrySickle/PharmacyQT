@@ -41,13 +41,12 @@ export default class Convert extends React.Component {
       const amount = (Math.round(this.getAmount() * 10) / 10).toFixed(1);
       const totalMl = Math.ceil(amount * timesPerDay * totalInDays);
       const takeMg = (
-        (Math.round(
-          parseInt(this.state.og_amount, 10) /
-            parseInt(this.state.og_volume, 10),
-        ) *
-          this.getAmount() *
-          10) /
-        10
+        Math.round(
+          (parseInt(this.state.og_amount, 10) /
+            parseInt(this.state.og_volume, 10)) *
+            this.getAmount() *
+            10,
+        ) / 10
       ).toFixed(1);
       if (this.state.take_times_type === 'hours') {
         const old_rx = `Take ${amount} ml (${takeMg} mg) every ${24 /
@@ -74,13 +73,12 @@ export default class Convert extends React.Component {
         ).toFixed(1);
         const newTotalMl = Math.ceil(newAmount * timesPerDay * totalInDays);
         const newTakeMg = (
-          (Math.round(
-            parseInt(this.state.new_amount, 10) /
-              parseInt(this.state.new_volume, 10),
-          ) *
-            this.getNewAmount(dosage, new_amount, new_volume) *
-            10) /
-          10
+          Math.round(
+            (parseInt(this.state.new_amount, 10) /
+              parseInt(this.state.new_volume, 10)) *
+              this.getNewAmount(dosage, new_amount, new_volume) *
+              10,
+          ) / 10
         ).toFixed(1);
         if (this.state.take_times_type === 'hours') {
           const new_rx = `Take ${newAmount} ml (${newTakeMg} mg) every ${24 /
