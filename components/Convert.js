@@ -17,26 +17,50 @@ export default class Convert extends React.Component {
       total_ml: '',
       new_amount: '',
       new_volume: '5',
-      new_rx: '',
+      new_rx: <Text />,
+      old_rx: <Text />,
     };
 
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange() {
-    let take_amount = parseInt(this.state.take_amount);
-    let take_times = parseInt(this.state.take_times);
-    let for_x = parseInt(this.state.for_x);
+    let take_amount = parseInt(this.state.take_amount, 10);
+    let take_times = parseInt(this.state.take_times, 10);
+    let for_x = parseInt(this.state.for_x, 10);
     if (!isNaN(take_amount) && !isNaN(take_times) && !isNaN(for_x)) {
       const total =
         this.state.for_type === 'ml'
           ? for_x
           : this.getAmount() * this.getTimes() * for_x;
-      this.setState({total_ml: total.toString()});
-      let og_amount = parseInt(this.state.og_amount);
-      let og_volume = parseInt(this.state.og_volume);
-      let new_amount = parseInt(this.state.new_amount);
-      let new_volume = parseInt(this.state.new_volume);
+      const timesPerDay = this.getTimes();
+      const totalInDays =
+        this.state.for_type === 'ml'
+          ? total / (this.getAmount() * timesPerDay)
+          : this.state.for_x;
+      const amount = (Math.round(this.getAmount() * 10) / 10).toFixed(1);
+      const totalMl = Math.ceil(amount * timesPerDay * totalInDays);
+      const takeMg = (
+        (Math.round(
+          parseInt(this.state.og_amount, 10) /
+            parseInt(this.state.og_volume, 10),
+        ) *
+          this.getAmount() *
+          10) /
+        10
+      ).toFixed(1);
+      if (this.state.take_times_type === 'hours') {
+        const old_rx = `Take ${amount} ml (${takeMg} mg) every ${24 /
+          timesPerDay} hours for ${totalInDays} days, total ${totalMl} ml`;
+        this.setState({old_rx});
+      } else {
+        const old_rx = `Take ${amount} ml (${takeMg} mg) ${timesPerDay} times per day for ${totalInDays} days, total ${totalMl} ml`;
+        this.setState({old_rx});
+      }
+      let og_amount = parseInt(this.state.og_amount, 10);
+      let og_volume = parseInt(this.state.og_volume, 10);
+      let new_amount = parseInt(this.state.new_amount, 10);
+      let new_volume = parseInt(this.state.new_volume, 10);
       if (
         !isNaN(og_amount) &&
         !isNaN(og_volume) &&
@@ -44,23 +68,27 @@ export default class Convert extends React.Component {
         !isNaN(new_volume)
       ) {
         const dosage = this.getDosage(og_amount, og_volume, this.getAmount());
-        const newAmount = this.getNewAmount(dosage, new_amount, new_volume);
-        const timesPerDay = this.getTimes();
-        const totalInDays =
-          this.state.for_type === 'ml'
-            ? total / (this.getAmount() * timesPerDay)
-            : this.state.for_x;
+        const newAmount = (
+          Math.round(this.getNewAmount(dosage, new_amount, new_volume) * 10) /
+          10
+        ).toFixed(1);
+        const newTotalMl = Math.ceil(newAmount * timesPerDay * totalInDays);
+        const newTakeMg = (
+          (Math.round(
+            parseInt(this.state.new_amount, 10) /
+              parseInt(this.state.new_volume, 10),
+          ) *
+            this.getNewAmount(dosage, new_amount, new_volume) *
+            10) /
+          10
+        ).toFixed(1);
         if (this.state.take_times_type === 'hours') {
-          const newRx = `Take ${newAmount} ml every ${24 /
-            timesPerDay} hours for ${totalInDays} days, total ${newAmount *
-            timesPerDay *
-            totalInDays} ml`;
-          this.setState({new_rx: newRx});
+          const new_rx = `Take ${newAmount} ml (${newTakeMg} mg) every ${24 /
+            timesPerDay} hours for ${totalInDays} days, total ${newTotalMl} ml`;
+          this.setState({new_rx});
         } else {
-          const newRx = `Take ${newAmount} ml ${timesPerDay} times per day for ${totalInDays} days, total ${newAmount *
-            timesPerDay *
-            totalInDays} ml`;
-          this.setState({new_rx: newRx});
+          const new_rx = `Take ${newAmount} ml (${newTakeMg} mg) ${timesPerDay} times per day for ${totalInDays} days, total ${newTotalMl} ml`;
+          this.setState({new_rx});
         }
       } else {
         this.setState({new_rx: ''});
@@ -80,13 +108,13 @@ export default class Convert extends React.Component {
 
   getAmount() {
     return this.state.take_amount_type === 'tsp'
-      ? parseInt(this.state.take_amount) * 5
+      ? parseInt(this.state.take_amount, 10) * 5
       : this.state.take_amount;
   }
 
   getTimes() {
     return this.state.take_times_type === 'hours'
-      ? 24 / parseInt(this.state.take_times)
+      ? 24 / parseInt(this.state.take_times, 10)
       : this.state.take_times;
   }
 
@@ -215,8 +243,7 @@ export default class Convert extends React.Component {
           </Picker>
         </View>
         <View style={this.props.styles.rowContainer}>
-          <Text style={this.props.styles.h1}>Total ml: </Text>
-          <Text style={this.props.styles.h1}>{this.state.total_ml}</Text>
+          <Text style={this.props.styles.rx}>{this.state.old_rx}</Text>
         </View>
         <View style={this.props.styles.margin} />
         <View>
@@ -254,7 +281,7 @@ export default class Convert extends React.Component {
         </View>
         <View style={this.props.styles.margin} />
         <View>
-          <Text style={this.props.styles.h1}>{this.state.new_rx}</Text>
+          <Text style={this.props.styles.rx}>{this.state.new_rx}</Text>
         </View>
       </ScrollView>
     );

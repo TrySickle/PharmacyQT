@@ -56,6 +56,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'black',
   },
+  rx: {
+    fontSize: 25,
+    color: 'black',
+  },
   title: {
     fontSize: 30,
     color: 'black',

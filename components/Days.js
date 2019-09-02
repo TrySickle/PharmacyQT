@@ -67,7 +67,17 @@ export default class Days extends React.Component {
         });
       })
       .then(() => {
-        this.setState({refreshing: false});
+        this.setState({
+          refreshing: false,
+          name: this.state.db_names[0],
+          doses: this.getDoses(),
+          dose_unit: this.getDoseUnit(),
+          action: this.getAction(),
+          qty_unit: this.getQtyUnit(),
+          max_day_sppl: this.getMaxDaySppl(),
+          box_unit: this.getBoxUnit(),
+          box_qty: this.getBoxQty(),
+        });
       });
   };
 
@@ -172,20 +182,21 @@ export default class Days extends React.Component {
   getDays(quantity, doses, take, amount, max_day_sppl) {
     let days = Math.floor((quantity * doses) / take / amount);
     if (days > max_day_sppl) {
-      return quantity * max_day_sppl;
-    } else {
-      return days;
+      days = quantity * max_day_sppl;
     }
+    if (this.state.take_times_type === 'xWeek') {
+      days *= 7;
+    }
+    return days;
   }
 
   handleChange() {
-    let quantity = parseInt(this.state.quantity);
-    let amount = parseInt(this.state.amount);
-    let take_times = parseInt(this.state.take_times);
+    let quantity = parseInt(this.state.quantity, 10);
+    let amount = parseInt(this.state.amount, 10);
+    let take_times = parseInt(this.state.take_times, 10);
     if (!isNaN(quantity) && !isNaN(amount) && !isNaN(take_times)) {
       let doses = this.getDoses();
       let max_day_sppl = this.getMaxDaySppl();
-      console.log(doses);
       if (this.state.take_times_type === 'hours') {
         this.setState({
           days: this.getDays(
@@ -366,6 +377,7 @@ export default class Days extends React.Component {
               }>
               <Picker.Item label="times per day" value="xDay" />
               <Picker.Item label="hours" value="hours" />
+              <Picker.Item label="timers per week" value="xWeek" />
             </Picker>
           </View>
         </View>
